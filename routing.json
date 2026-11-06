@@ -1,18 +1,21 @@
 {
   "stages": {
     "extract": {
-      "modelAlias": "economy",
+      "modelAlias": "haiku",
       "maxInputTokens": 2000,
       "maxOutputTokens": 500,
       "maxRetries": 0
     },
     "reason": {
-      "modelAlias": "reasoning",
+      "modelAlias": "opus",
       "maxInputTokens": 4000,
       "maxOutputTokens": 1000,
-      "maxRetries": 0
+      "maxRetries": 1
     }
   },
-  "routes": [],
-  "escalationPolicy": "TODO define observable uncertainty/complexity criteria."
+  "routes": [
+    { "taskType": "extract", "stage": "extract" },
+    { "taskType": "reason", "stage": "reason" }
+  ],
+  "escalationPolicy": "Escalate from extract to reason, with the reason stated, when a task cites several or conflicting sources, any archived or superseded source, an ambiguous or unapproved decision (e.g. channel choice), or the answer lacks evidence in current-policy.md; never adopt archived advice."
 }
